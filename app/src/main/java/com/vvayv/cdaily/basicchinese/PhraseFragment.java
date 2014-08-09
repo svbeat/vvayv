@@ -4,6 +4,7 @@ package com.vvayv.cdaily.basicchinese;
  * Created by qingdi on 8/5/14.
  */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.vvayv.cdaily.basicchinese.data.PhraseData;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -31,11 +36,20 @@ public class PhraseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_phrase, container, false);
 
-        mPhaseAdapter = new PhraseAdapter(getActivity(), PhraseData.RAW_DATA, R.layout.list_item_phrase,
+        Intent intent = getActivity().getIntent();
+        String categoryKey = null;
+        if (intent != null && intent.hasExtra(PhraseActivity.CATEGORY_KEY)) {
+            categoryKey = intent.getStringExtra(PhraseActivity.CATEGORY_KEY);
+        }
+
+        List<Map<String, String>> phraseData = PhraseData.getPhraseDataByCategory(categoryKey);
+
+        mPhaseAdapter = new PhraseAdapter(getActivity(), phraseData, R.layout.list_item_phrase,
                             PhraseData.VIEW_ENTRIES, PhraseData.VIEWS);
-        mActionListener = new ActionListener(getActivity(), PhraseData.RAW_DATA);
+
+        mActionListener = new ActionListener(getActivity(), phraseData);
         mPhaseAdapter.setActionListener(mActionListener);
 
         final ListView listView = (ListView) rootView.findViewById(R.id.listview_phrase);

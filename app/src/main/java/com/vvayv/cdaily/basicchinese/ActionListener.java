@@ -102,6 +102,9 @@ public class ActionListener {
 
     public void onClickPlaying(View view) {
         if (!isPlaying) {
+            if (!checkRecordFileExists()){
+                return;
+            }
             releaseRecorder();
             releasePlayer();
             mPlayer = new MediaPlayer();
@@ -190,8 +193,12 @@ public class ActionListener {
         if (isPlaying) {
             mPlayerImageView.setImageResource(R.drawable.stop);
         } else {
-            String phaseId = mRawData.get(mCurrPos).get(PhraseEntry.COLUMN_ID);
-            mPlayerImageView.setImageResource(PhraseData.checkRecordFileExists(mContext, phaseId)? R.drawable.play:R.drawable.play_disabled);
+            mPlayerImageView.setImageResource(checkRecordFileExists()? R.drawable.play:R.drawable.play_disabled);
         }
+    }
+
+    private boolean checkRecordFileExists() {
+        String phaseId = mRawData.get(mCurrPos).get(PhraseEntry.COLUMN_ID);
+        return PhraseData.checkRecordFileExists(mContext, phaseId);
     }
 }

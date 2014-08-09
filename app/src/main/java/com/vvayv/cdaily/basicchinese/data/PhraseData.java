@@ -15,6 +15,24 @@ import java.util.Map;
  */
 public class PhraseData {
 
+
+    public static final class Categories {
+        public static final String GREETING = "Greeting";
+        public static final String ESSENTIAL = "Essential";
+        public static final String NUMBER = "Number";
+        public static final String TRAVEL = "Travel";
+        public static final String DOCTOR = "See the doctor";
+
+        public static List<String> data = new ArrayList<String>();
+        static {
+            data.add(GREETING);
+            data.add(ESSENTIAL);
+            data.add(NUMBER);
+            data.add(TRAVEL);
+            data.add(DOCTOR);
+        }
+    }
+
     private static String RECORD_FILE_SUFFIX = ".3gp";
 
     public static final class PhraseEntry {
@@ -39,7 +57,7 @@ public class PhraseData {
 
     public static final int VIEWS[] = { R.id.list_item_english_textview, R.id.list_item_pinyin_textview, R.id.list_item_chinese_textview };
 
-    private static final String[][] rawArray = {
+    private static final String[][] rawArray_number = {
             {"1", "1", "one ... two ... three", "yī ... èr ... sān", "一 ... 二 ... 三", Integer.toString(R.raw.audio1)},
             {"2", "4", "four ... five ... six", "sì ... wŭ ... liù", "四 ... 五 ... 六", Integer.toString(R.raw.audio4)},
             {"3", "1", "seven ... eight ... nine", "qī ... bā ... jiŭ", "七 ... 八 ... 九", Integer.toString(R.raw.audio7)},
@@ -50,17 +68,31 @@ public class PhraseData {
             {"8", "4", "sixty thousand", "liù wàn", "六万", Integer.toString(R.raw.audio60000)}
     };
 
-    public static List<Map<String, String>> RAW_DATA = new ArrayList<Map<String, String>>();
 
-    static {
+    public static List<Map<String,String>> getPhraseDataByCategory(String categoryKey) {
+        List<Map<String, String>> phraseData = new ArrayList<Map<String, String>>();
+        String[][] rawArray = null;
+
+        if(Categories.NUMBER.equals(categoryKey)) {
+            rawArray = rawArray_number;
+        } else {
+            return phraseData;
+        }
+
         for (int i = 0; i < rawArray.length; i++) {
             Map<String, String> dataMap = new HashMap<String, String>();
             for (int j = 0; j < MAP_ENTRIES.length; j++) {
                 dataMap.put(MAP_ENTRIES[j], rawArray[i][j]);
             }
-            RAW_DATA.add(dataMap);
+            phraseData.add(dataMap);
         }
+
+        return phraseData;
     }
+
+
+
+
 
     public static String getRecordFileName(Context context, String phraseId) {
         return context.getFilesDir()+"/"+phraseId+RECORD_FILE_SUFFIX;

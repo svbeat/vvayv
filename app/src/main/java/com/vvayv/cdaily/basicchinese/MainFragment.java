@@ -4,6 +4,10 @@ package com.vvayv.cdaily.basicchinese;
  * Created by qingdi on 8/5/14.
  */
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -14,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -27,11 +32,7 @@ import java.io.IOException;
  */
 public class MainFragment extends Fragment {
 
-    private PhraseAdapter   mPhaseAdapter;
-
-    private ActionListener  mActionListener = null;
-
-
+    private ArrayAdapter   mCategoryAdapter;
 
     public MainFragment() {
     }
@@ -41,33 +42,25 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mPhaseAdapter = new PhraseAdapter(getActivity(), PhraseData.RAW_DATA, R.layout.list_item_phrase,
-                            PhraseData.VIEW_ENTRIES, PhraseData.VIEWS);
-        mActionListener = new ActionListener(getActivity(), PhraseData.RAW_DATA);
-        mPhaseAdapter.setActionListener(mActionListener);
 
-        final ListView listView = (ListView) rootView.findViewById(R.id.listview_phrase);
+        mCategoryAdapter = new ArrayAdapter(getActivity(), R.layout.list_item_category,
+                                R.id.list_item_category_textview, PhraseData.Categories.data);
+
+        final ListView listView = (ListView) rootView.findViewById(R.id.listview_category);
+        listView.setAdapter(mCategoryAdapter);
+
+        ColorDrawable lightGrey = new ColorDrawable(Color.TRANSPARENT);
+        //listView.setDivider(this.getResources().getDrawable(Color.TRANSPARENT));
+        listView.setDivider(lightGrey);
+        listView.setDividerHeight(60);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
-                mPhaseAdapter.setCurrPos(position);
-                mPhaseAdapter.notifyDataSetChanged();
-                mActionListener.onPhraseItemClick(adapterView, view, position, l);
+            public void onItemClick(AdapterView<?> adapterView, View v, int pos, long l) {
+                Intent intent = new Intent(getActivity(), PhraseActivity.class)
+                        .putExtra(PhraseActivity.CATEGORY_KEY, PhraseData.Categories.data.get(pos));
+                startActivity(intent);
             }
         });
-
-        listView.setAdapter(mPhaseAdapter);
-
         return rootView;
     }
-
-    @Override
-    public void onPause() {
-        if (mActionListener != null) {
-            mActionListener.resetMediaResources();
-        }
-        super.onPause();
-    }
-
 
 }

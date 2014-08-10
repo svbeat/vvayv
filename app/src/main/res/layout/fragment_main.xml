@@ -2,7 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp"
     android:layout_gravity="center"
     tools:context=".MainActivity$PlaceholderFragment">
 

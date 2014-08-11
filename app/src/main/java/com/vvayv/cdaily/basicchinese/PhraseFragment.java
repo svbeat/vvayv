@@ -44,6 +44,7 @@ public class PhraseFragment extends Fragment {
             categoryKey = intent.getStringExtra(PhraseActivity.CATEGORY_KEY);
         }
 
+        getActivity().setTitle(categoryKey);
         List<Map<String, String>> phraseData = PhraseData.getPhraseDataByCategory(categoryKey);
 
         mPhaseAdapter = new PhraseAdapter(getActivity(), phraseData, R.layout.list_item_phrase,

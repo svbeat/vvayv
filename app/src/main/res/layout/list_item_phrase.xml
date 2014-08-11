@@ -20,14 +20,14 @@
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="0dp"
         android:layout_weight="8"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:textAppearanceMedium"
         android:text="one"
         android:id="@+id/list_item_english_textview"/>
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="10dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="*"
         android:textColor="@color/logoblue"
         android:id="@+id/list_item_recording_exists_textview"/>
